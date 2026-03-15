@@ -86,7 +86,7 @@ bl1.bin  bl2.bin  bl31.bin  disk.img  efi-part  efi-part.vfat  fip.bin  Image  r
 
 ## 4. 运行qemu
 
-​	执行buildroot生成的启动脚本start-qemu.sh，进入qemu虚拟机后cat /proc/version，环境搭建完成
+​	执行buildroot生成的启动脚本start-qemu.sh，进入qemu虚拟机后cat /proc/version，环境da jin
 
 ```shell
 nobos@debian:~/下载/buildroot-2026.02$ ./output/images/start-qemu.sh
@@ -97,4 +97,37 @@ Linux version 6.18.7 (nobos@debian) (aarch64-buildroot-linux-gnu-gcc.br_real (Bu
 
 ## 5. 基于该环境进行内核开发
 
-待续......
+​	配置buildroot的kernel选项，个人仓库（Custom Git repository）的地址从https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/获取，国内建议选择https协议，git下不动
+
+![image-20260315201510713](/home/nobos/Works/notes/assets/image-20260315201510713.png)
+
+​	个人仓库版本（Custom repository version）填写最新tag V7.0-rc3	
+
+![image-20260315202140546](/home/nobos/Works/notes/assets/image-20260315202140546.png)
+
+​	填写好上述两个信息后重新编译buildroot后，重新启动qemu系统，发现内核更新到最新tag的版本
+
+```shell
+nobos@debian:~/Works/buildroot-2026.02$ make -j16
+nobos@debian:~/Works/buildroot-2026.02$ ./output/images/start-qemu.sh
+# cat /proc/version 
+Linux version 7.0.0-rc3 (nobos@debian) (aarch64-sbsa-linux-gnu-gcc.br_real (Buildroot 2026.02) 14.3.0, GNU ld (GNU Binutils) 2.44) #1 SMP PREEMPT Sun Mar 15 21:00:23 CST 2026
+```
+
+​	buildroot将内核的源码、编译后的内核树分别放在dl/linux/git和output/build/linux-v7.0-rc3
+
+```shell
+nobos@debian:~/Works/buildroot-2026.02/dl/linux/git$ ls
+arch   COPYING  Documentation  include   ipc      kernel    MAINTAINERS  net     samples   sound  virt
+block  CREDITS  drivers        init      Kbuild   lib       Makefile     README  scripts   tools
+certs  crypto   fs             io_uring  Kconfig  LICENSES  mm           rust    security  usr
+nobos@debian:~/Works/buildroot-2026.02/output/build/linux-v7.0-rc3$ ls
+arch        crypto         io_uring  LICENSES                 modules.order   scripts     virt
+block       Documentation  ipc       MAINTAINERS              Module.symvers  security    vmlinux
+built-in.a  drivers        Kbuild    Makefile                 net             sound       vmlinux.a
+certs       fs             Kconfig   mm                       README          System.map  vmlinux.o
+COPYING     include        kernel    modules.builtin          rust            tools       vmlinux.symvers
+CREDITS     init           lib       modules.builtin.modinfo  samples         usr         vmlinux.unstripped
+```
+
+​	dl/linux/git的内核树就是从内核官网拉至本地的，接下来就是愉快的内核开发环节啦^_^
