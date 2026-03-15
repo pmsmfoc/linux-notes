@@ -99,11 +99,11 @@ Linux version 6.18.7 (nobos@debian) (aarch64-buildroot-linux-gnu-gcc.br_real (Bu
 
 ​	配置buildroot的kernel选项，个人仓库（Custom Git repository）的地址从https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/获取，国内建议选择https协议，git下不动
 
-![image-20260315201510713](/home/nobos/Works/notes/assets/image-20260315201510713.png)
+![image-20260315201510713](assets/image-20260315201510713.png)
 
 ​	个人仓库版本（Custom repository version）填写最新tag V7.0-rc3	
 
-![image-20260315202140546](/home/nobos/Works/notes/assets/image-20260315202140546.png)
+![image-20260315202140546](assets/image-20260315202140546.png)
 
 ​	填写好上述两个信息后重新编译buildroot后，重新启动qemu系统，发现内核更新到最新tag的版本
 
